@@ -1,4 +1,7 @@
 
+SALESPERSON_INDEX = 0
+INTERNET_INDEX = 1
+DORKY_LINE_LENGTH = 80
 
 import pandas as pd
 import numpy as np
@@ -47,6 +50,7 @@ import numpy as np
 # print("******************************************")
 # f = open("orders-with-sales.txt")
 # sales = [0, 0]
+
 # for line in f:
 #     d = line.split("|")
 #     if d[1] == "0":
@@ -61,7 +65,7 @@ import numpy as np
 #     print("Time to fire the sales team! Online sales rule all!")
 # print("******************************************")
 df = pd.read_csv("orders-by-type.txt", sep="|") # open the file 
-df.columns = ['ID','MelonType', 'QtySold'] #d defining the column names in the data fames
+df.columns = ['ID','MelonType', 'QtySold'] #d defining the column names in the data fRames
 
 m = df.groupby('MelonType')['QtySold'] # grouped the  quantity of melons sold by melon type 
 melons_sold = m.sum()# adding the quantity of melons sold
@@ -70,8 +74,45 @@ melon_prices = { "Musk": 1.15, "Hybrid": 1.30, "Watermelon": 1.75, "Winter": 4.0
 
 for melon_type, melon_count in melons_sold.items():
     price = melon_prices[melon_type]
-    melon_revenue = price + melons_sold[melon_type]
+    melon_revenue = price * melons_sold[melon_type]
+   
     print(f"We sold {melon_count} {melon_type} melons at ${price:.2f} each for a total of ${melon_revenue:,.2f}")
+
+print("******************************************")
+orderTypes = pd.read_csv("orders-with-sales.txt", sep="|") # open the file 
+orderTypes.columns = ['ID','SalesID', 'SalesRep', 'OrderTotal']
+print(orderTypes)
+
+m = orderTypes.groupby('SalesID')['OrderTotal']
+sales = m.sum()
+print(sales)
+
+s = orderTypes[orderTypes['SalesID'] > 0]
+    #subset 
+print(s)
+sales = s.sum()
+print(sales['OrderTotal'])
+
+# orderTypes.loc[orderTypes['SalesID'] > 0, 'salesPeople'] = sales.sum() 
+
+# print(orderTypes['salesPeople'])
+
+online = orderTypes[orderTypes['SalesID'] == 0]
+print(online)
+onlineSales = online.sum()
+print(onlineSales['OrderTotal'])
+
+print(f"Salespeople generated ${sales} in revenue.")
+print(f"Internet sales generated ${onlineSales} in revenue.")
+  
+
+
+
+
+
+
+
+
 
 
 
