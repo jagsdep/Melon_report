@@ -1,0 +1,39 @@
+
+Test we can import with no errors. (Melon order isn't guaranteed.)
+
+    >>> import accounting    # doctest: +ELLIPSIS
+    TOTAL REVENUE
+    We sold ... melons at ... each for a total of ...
+    <BLANKLINE>
+    SALES DATA
+    Salespeople generated $206,266.50 in revenue.
+    Internet sales generated $108,440.29 in revenue.
+    Guess there's some value to those salespeople after all.
+
+Test order_tally function.
+
+    >>> melon_tallies = accounting.order_tally("orders-by-type.txt")
+    >>> for melon in sorted(melon_tallies.keys()):
+    ...     print("{melon}: {tally}".format(
+    ...         melon=melon, tally=melon_tallies[melon]))
+    Hybrid: 1928
+    Musk: 4795
+    Watermelon: 34982
+    Winter: 841
+
+Test total_revenue function.
+
+    >>> revenue = accounting.total_revenue(melon_tallies)  # doctest: +ELLIPSIS
+    TOTAL REVENUE
+    We sold ... melons at ... each for a total of ...
+
+    >>> revenue
+    72603.15
+
+Test sales comparison function.
+
+    >>> accounting.sales_comparison("orders-with-sales.txt")
+    SALES DATA
+    Salespeople generated $206,266.50 in revenue.
+    Internet sales generated $108,440.29 in revenue.
+    Guess there's some value to those salespeople after all.
